@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html manifest="Blocker.manifest">
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Blocker</title>
+<script src="jquery/jquery-1.4.2.js"></script>
+<script src="jquery/jquery.effects.core.js"></script>
+<script>
+
+function quit(){
+	
+	$( '.button' ).animate({ marginLeft: ($(window).width()+10)+'px', }, 200*localStorage.getItem("anim"));
+	$( '#header' ).animate({ opacity: '0.0', }, 200*localStorage.getItem("anim"));
+	
+	setTimeout(function(){ document.location = 'acc.html';}, 200*localStorage.getItem("anim"));
+	
+}
+</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="body" style='text-align:left;'>
+
+<div id="header" style="opacity : 0.0;">
+
+<table style="color:#888;font-size:18px;width:100%;padding:0px 5px 0px 5px">
+<tr><td width="60px">
+<div id="retour" onclick="quit();" onmousedown="quit();" ontouchstart="quit();">Back</div>
+</td><td align="right"></td>
+</tr></table>
+
+</div>
+
+<div id="header">
+<table class="button" style="color:#888;font-size:18px;width:100%;padding:0px 5px 0px 5px">
+<tr>
+<td align="center">
+Options
+</td>
+</tr></table>
+
+</div>
+<div id="menu">
+<br><br>
+<div id="button" class="button"  style="background: #eee; color: #aaa">
+Easy <p id="diff" style="display:inline;font-size: 15px">
+(buy the app)
+</p>
+</div>
+<br>
+<div id="button"  class="button" onclick="if(flag == 0){flag = 1;setTimeout(function(){ flag = 0; },500);if(localStorage.getItem('sound') == 'on'){localStorage.sound='off';this.innerHTML = 'Sound off';}else{localStorage.sound='on';this.innerHTML = 'Sound on';}}" ontouchstart="if(flag == 0){flag = 1;setTimeout(function(){ flag = 0; },500);if(localStorage.getItem('sound') == 'on'){localStorage.sound='off';this.innerHTML = 'Sound off';}else{localStorage.sound='on';this.innerHTML = 'Sound on';}}" onmousedown="if(flag == 0){flag = 1;setTimeout(function(){ flag = 0; },500);if(localStorage.getItem('sound') == 'on'){localStorage.sound='off';this.innerHTML = 'Sound off';}else{localStorage.sound='on';this.innerHTML = 'Sound on';}}">
+<p id="sound" style="display:inline">
+Sound on
+</p>
+</div>
+<br>
+<div id="button"  class="button"  style="font-size: 18px;background: #eee; color: #aaa">
+You're Anonymous<br><p id="diff" style="display:inline;font-size: 15px">
+(buy the app)
+</p>
+</div>
+<br>
+<div id="button"  class="button" onclick="localStorage.highscore='0';localStorage.never='0';localStorage.highscore_easy='0';localStorage.highscore_diff='0';localStorage.highscore_insa='0';document.location='acc.html';" onmousedown="localStorage.highscore='0';localStorage.never='0';localStorage.highscore_easy='0';localStorage.highscore_diff='0';localStorage.highscore_insa='0';document.location='acc.html';" ontouchstart="localStorage.highscore='0';localStorage.never='0';localStorage.highscore_easy='0';localStorage.highscore_diff='0';localStorage.highscore_insa='0';document.location='acc.html';">
+Reset game
+</div>
+<br>
+
+<table id='tablescore'>
+<tr><td>
+<div id="scorebar">
+</div>
+</td></tr></table>
+
+</div>
+<div id="block">
+
+</div>
+
+</body>
+</html>
+<script>
+
+
+
+if(typeof(Storage)!=="undefined")
+  {
+  	
+  if(!localStorage.getItem("diff")){
+  	localStorage.diff = "0";
+  }
+  
+  if(localStorage.getItem("sound")=="off"){
+  	document.getElementById("sound").innerHTML="Sound off";
+  }
+
+
+  
+  }
+else
+  {
+  alert("Sorry, your device isn't supporting data storage, your highscore will be forgotten.");
+  }
+  
+  if(sessionStorage.getItem("sortie")=="1"){
+  sessionStorage.sortie = "0";
+   $( '.button' ).animate({ opacity: '0.0' }, 0);
+ $( '.button' ).animate({ opacity: '1.0' }, 200*localStorage.getItem("anim"));
+ $( '#header' ).animate({ opacity: '1.0', }, 200*localStorage.getItem("anim"));
+
+  }else{
+  	 $( '#header' ).animate({ opacity: '1.0', }, 0);
+
+  }
+
+
+</script>

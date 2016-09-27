@@ -1,0 +1,523 @@
+
+<!DOCTYPE html>
+<html manifest="Blocker.manifest">
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Blocker</title>
+<script src="jquery/jquery-1.4.2.js"></script>
+<script src="jquery/jquery.effects.core.js"></script>
+<script>
+window.onscroll = function () { window.scrollTo(0, 0); };
+
+
+function stopScrolling( touchEvent ) { touchEvent.preventDefault(); }
+document.addEventListener( 'touchstart' , stopScrolling , false );
+document.addEventListener( 'touchmove' , stopScrolling , false );
+
+
+function addcolor(id){
+	if(flag == 0){
+		flag = 1;
+		setTimeout(function(){ flag = 0; },100);
+		
+	if(document.getElementById(id).innerHTML=="0"){
+
+try{
+		addsnd.currentTime = 0;
+		addsnd.play();
+		  }catch(err){ var z = 0; }
+		  
+		document.getElementById(id).innerHTML="1";
+		$( "#"+id ).animate({
+				backgroundColor: "#DA3322",
+		}, 50*localStorage.getItem("anim") );
+		verify();
+		
+		  if(localStorage.getItem("diff")==0){
+		  	ordi_easy();
+		  }
+		  
+		  if(localStorage.getItem("diff")==1){
+		  	if(Math.floor((Math.random()*3)+1)==1){
+		  		ordi_easy();
+		  	}else{
+		  		ordi_insane();
+		  	}
+		  }
+		  
+		  if(localStorage.getItem("diff")==2){
+		  	ordi_insane();
+		  }
+		
+	}
+	if(document.getElementById(id).innerHTML=="2" && document.getElementById("points").value>0){
+		
+		try{
+		ordisnd.currentTime = 0;
+		ordisnd.play();
+		  }catch(err){ var z = 0; }
+		  
+		document.getElementById(id).innerHTML="0";
+		$( "#"+id ).animate({
+				backgroundColor: "#eee",
+		}, 50*localStorage.getItem("anim") );
+		document.getElementById("points").value=document.getElementById("points").value-1;
+		document.getElementById("score").value=parseInt(document.getElementById("score").value)+100;
+		verify();
+	}
+	
+	document.getElementById("scoreht").innerHTML=(""+document.getElementById("score").value).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+	
+	document.getElementById("pointsht").innerHTML=document.getElementById("points").value;
+	
+	available=0;
+	
+	for(i=0;i<64;i++){
+		if(insquare(i)=="0"){
+			available++;
+		}
+	}
+		
+	if(available==0 && parseInt(document.getElementById("points").value)==0){
+		$( "#perdu" ).animate({
+					top: 0+"px",
+			}, 500*localStorage.getItem("anim") );
+			
+			
+		
+		if(localStorage.getItem("diff")==0){
+		  	if(parseInt(document.getElementById("score").value)>parseInt(localStorage.getItem("highscore_easy"))){
+				localStorage.highscore_easy = String(document.getElementById("score").value);
+				document.getElementById("phrasefin").innerHTML = "New easy highscore !";
+			}
+		  }
+		  
+		  if(localStorage.getItem("diff")==1){
+		  	if(parseInt(document.getElementById("score").value)>parseInt(localStorage.getItem("highscore_diff"))){
+				localStorage.highscore_diff = String(document.getElementById("score").value);
+				document.getElementById("phrasefin").innerHTML = "New hard highscore !";
+			}
+		  }
+		  
+		  if(localStorage.getItem("diff")==2){
+		  	if(parseInt(document.getElementById("score").value)>parseInt(localStorage.getItem("highscore_insa"))){
+				localStorage.highscore_insa = String(document.getElementById("score").value);
+				document.getElementById("phrasefin").innerHTML = "New insane highscore !";
+			}
+		  }
+		  
+		if(parseInt(document.getElementById("score").value)>parseInt(localStorage.getItem("highscore"))){
+			document.getElementById("phrasefin").innerHTML = "New highscore !";
+		}
+
+		document.getElementById("scorefin").innerHTML = (""+String(document.getElementById("score").value)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+		document.getElementById("levelfin").innerHTML = (""+String(document.getElementById("level").value)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+		if(parseInt(document.getElementById("score").value)>parseInt(localStorage.getItem("highscore"))){
+			localStorage.highscore = String(document.getElementById("score").value);
+		}
+		document.getElementById("highscore").innerHTML=(""+localStorage.getItem("highscore")).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+	}
+
+	
+	}
+	
+}
+
+function ordi_easy(){
+	i=0;
+	randpos=Math.floor((Math.random()*63)+1);
+	while(document.getElementById("square_"+randpos).innerHTML!="0" && i<70){
+		randpos=randpos+1;
+		i++;
+		if(randpos>63){
+			randpos=0;
+		}
+	}
+	if(i<64){
+		$( "#square_"+randpos ).animate({
+			backgroundColor: "#6BDA32",
+		}, 100*localStorage.getItem("anim") );
+		document.getElementById("square_"+randpos).innerHTML="2";
+	}
+}
+
+function trouver(a,b,c,d){
+	liste="";
+	switch(insquare(a)+insquare(b)+insquare(c)+insquare(d)){
+				case "1110":
+					liste = liste + "|" + (d);
+					break;
+				case "1101":
+					liste = liste + "|" + (c ) + "|" + (c ) + "|" + (c ) + "|" + (c ) + "|" + (c );
+					break;
+				case "1011":
+					liste = liste + "|" + (b) + "|" + (b) + "|" + (b) + "|" + (b) + "|" + (b) + "|" + (b);
+					break;
+				case "0111":
+					liste = liste + "|" + (a);
+					break;
+			}
+	switch(insquare(a)+insquare(b)+insquare(c)){
+				case "110":
+					liste = liste + "|" + (c );
+					break;
+				case "101":
+					liste = liste + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b ) + "|" + (b );
+					break;
+				case "011":
+					liste = liste + "|" + (a );
+					break;
+			}
+	return liste;
+}
+
+function ordi_insane(){
+	liste="";
+	for(i=0;i<64;i++){
+		
+		if(i%8<5){
+			liste = liste + trouver(i,i+1,i+2,i+3);
+		}
+		if(i<40){
+			liste = liste + trouver(i,i+8,i+16,i+24);
+		}
+		if(i<37){
+			liste = liste + trouver(i,i+9,i+18,i+27);
+		}
+		if(i>23){
+			liste = liste + trouver(i,i-7,i-14,i-21);
+		}
+	}
+	
+	
+		arrayliste = String(liste).split("|");
+		
+		randpos = arrayliste[Math.floor((Math.random()*(arrayliste.length)))];
+		
+	if(!randpos || document.getElementById("square_"+randpos).innerHTML!="0"){
+		
+		ordi_easy();
+		
+	}else{
+		
+		$( "#square_"+randpos ).animate({
+				backgroundColor: "#6BDA32",
+		}, 100*localStorage.getItem("anim") );
+		document.getElementById("square_"+randpos).innerHTML="2";
+	
+	
+	}
+
+}
+
+
+
+function insquare(j){
+	return (document.getElementById("square_"+j).innerHTML);
+}
+
+function deleter(){
+	for(i=0;i<64;i++){
+		if(insquare(i)=="2" && Math.floor((Math.random()*3)+1)==1){
+			$( "#square_"+i ).animate({
+				backgroundColor: "#eee",
+			}, 500*localStorage.getItem("anim") );
+			document.getElementById("square_"+i).innerHTML='0';
+		}
+	}
+}
+
+
+function verify(){
+		
+	liste="";
+	for(i=0;i<64;i++){
+		
+		if(i%8<5 && insquare(i)+insquare(i+1)+insquare(i+2)+insquare(i+3)=="1111"){
+			liste=liste+"|"+i+"|"+(i+1)+"|"+(i+2)+"|"+(i+3);
+		}
+		if(i<40 && insquare(i)+insquare(i+8)+insquare(i+16)+insquare(i+24)=="1111"){
+			liste=liste+"|"+i+"|"+(i+8)+"|"+(i+16)+"|"+(i+24);
+		}
+		if(i<37 && i%8<5 && insquare(i)+insquare(i+9)+insquare(i+18)+insquare(i+27)=="1111"){
+			liste=liste+"|"+i+"|"+(i+9)+"|"+(i+18)+"|"+(i+27);
+		}
+		if(i>23 && i%8<5 && insquare(i)+insquare(i-7)+insquare(i-14)+insquare(i-21)=="1111"){
+			liste=liste+"|"+i+"|"+(i-7)+"|"+(i-14)+"|"+(i-21);
+		}
+	}
+
+	if(liste!=""){
+		arrayliste = String(liste).split("|");
+				
+		for (i = 1; i < arrayliste.length; i++) {
+			$( "#square_"+arrayliste[i] ).animate({
+				backgroundColor: "#eee",
+			}, 500*localStorage.getItem("anim") );
+			document.getElementById("square_"+arrayliste[i]).innerHTML='0';
+		}
+		
+		document.getElementById("points").value=parseInt(document.getElementById("points").value)+parseInt((arrayliste.length-1)/(16-Math.floor((Math.random()*8)+1)));
+		document.getElementById("score").value=parseInt(document.getElementById("score").value)+500*Math.pow(((arrayliste.length-1)/4),2);
+		
+		level = parseInt(document.getElementById("level").value);
+		
+		if(parseInt(parseInt(document.getElementById("score").value-document.getElementById("lastscore").value)/((Math.log(2*level+2))*100))>=100){
+			document.getElementById("level").value=parseInt(document.getElementById("level").value)+1;
+			
+			try{
+			levelsnd.currentTime = 0;
+			levelsnd.play();
+			  }catch(err){ var z = 0; }
+			  document.getElementById("levelht").innerHTML=document.getElementById("level").value;
+			deleter();
+			$( "#scorebar" ).animate({
+					width: "95%",
+			}, 100*localStorage.getItem("anim") );
+			setTimeout(function(){ document.getElementById("scorebar").style.width='0%';}, 500);
+			document.getElementById("lastscore").value=document.getElementById("score").value;
+		}else{
+			try{
+			linesnd.currentTime = 0;
+			linesnd.play();
+			  }catch(err){ var z = 0; }
+		}
+		
+		level = parseInt(document.getElementById("level").value);
+		
+		percentvalue = parseInt(parseInt(document.getElementById("score").value-document.getElementById("lastscore").value)/((Math.log(2*level+2))*100));
+
+		if(percentvalue>95){
+			percentvalue=95;
+		}
+			$( "#scorebar" ).animate({
+					width: percentvalue+"%",
+			}, 100*localStorage.getItem("anim") );
+		
+	}
+		
+}
+
+function debutaff(){
+	
+	try{
+	
+	linesnd.volume=.0;
+	addsnd.volume=.0;
+	ordisnd.volume=.0;
+	levelsnd.volume=.0;
+	
+	ordisnd.play();
+	addsnd.play();
+	linesnd.play();
+	levelsnd.play();
+	
+	if(localStorage.getItem("sound")!="off"){
+	linesnd.volume=1.0;
+	addsnd.volume=1.0;
+	ordisnd.volume=1.0;
+	levelsnd.volume=1.0;
+	}
+	
+  }catch(err){ var z = 0; }
+
+	
+	$( '#debutaff' ).fadeOut( 200*localStorage.getItem("anim") );
+}
+
+function quit(url){
+	
+	$( '.button' ).animate({ marginLeft: "-" + ($(window).width()+10)+'px', }, 200*localStorage.getItem("anim"));
+	$( '#header' ).animate({ opacity: '0.0', }, 200*localStorage.getItem("anim"));
+	$( '#title' ).animate({ opacity: '0.0', }, 200*localStorage.getItem("anim"));
+	
+	sessionStorage.sortie = "1";
+	
+	setTimeout(function(){ document.location = url;}, 200*localStorage.getItem("anim"));
+	
+}
+
+
+</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body id="body" style='text-align:left;'>
+<div id="header">
+
+<table style="color:#888;font-size:18px;width:100%;padding:0px 5px 0px 5px">
+<tr><td width="60px">
+<div id="retour" onclick="quit('menu.html')" onmousedown="quit('menu.html')" ontouchstart="quit('menu.html')">Back</div>
+</td>
+<td align="right">
+Highscore : <p style="display:inline" id="highscore">0</p>
+</td>
+</tr></table>
+
+</div>
+<div id="divtablescore">
+
+<table id='tablescore'>
+<tr><td>
+<div id="scorebar">
+</div>
+</td></tr></table>
+
+</div>
+<div id="block">
+
+<table id='gamepad'>
+
+<tr>
+</tr><tr><td id='square_0' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_1' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_2' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_3' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_4' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_5' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_6' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_7' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td></tr><tr><td id='square_8' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_9' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_10' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_11' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_12' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_13' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_14' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_15' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td></tr><tr><td id='square_16' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_17' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_18' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_19' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_20' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_21' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_22' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_23' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td></tr><tr><td id='square_24' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_25' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_26' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_27' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_28' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_29' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_30' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_31' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td></tr><tr><td id='square_32' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_33' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_34' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_35' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_36' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_37' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_38' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_39' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td></tr><tr><td id='square_40' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_41' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_42' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_43' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_44' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_45' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_46' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_47' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td></tr><tr><td id='square_48' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_49' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_50' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_51' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_52' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_53' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_54' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_55' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td></tr><tr><td id='square_56' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_57' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_58' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_59' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_60' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_61' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_62' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td><td id='square_63' class='oversquare' onmousedown='addcolor(this.id);' onclick='addcolor(this.id);' ontouchstart='addcolor(this.id);'>0</td></tr>
+
+</table>
+
+</div>
+
+<div id="footer">
+<table id="scores" style="color:#888;font-size:18px;width:100%;padding:0px 5px 0px 5px">
+<tr>
+<td style="color:#000;width:40%;" width="50%">
+Bonus
+</td>
+<td style="color:#000;width:40%;">
+Score
+</td>
+<td style="color:#000;">
+Level
+</td>
+</tr>
+<tr>
+<td style="color:#000;" width="50%" id="pointsht">
+0
+</td>
+<td style="color:#000;" id="scoreht">
+0
+</td>
+<td style="color:#000;" id="levelht">
+0
+</td>
+</tr>
+</table>
+
+
+</div>
+<input type="hidden" value="0" id="points">
+<input type="hidden" value="0" id="score">
+<input type="hidden" value="0" id="level">
+<input type="hidden" value="0" id="lastscore">
+
+
+<div id="perdu">
+
+
+<div id="menu">
+<br><br><br><br>
+<div id="finblock">
+<p style="display:inline" id="phrasefin">Game over</p><br><br>
+<p style="display:inline" id="scorefin">0</p><br>
+Level <p style="display:inline" id="levelfin">0</p><br>
+</div>
+<br><br>
+<div id="button" onclick="document.location='acc.html';" onmousedown="document.location='acc.html';" ontouchstart="document.location='acc.html';">
+Menu
+</div>
+<br>
+<div id="button" onclick="document.location='';" onmousedown="document.location='';" ontouchstart="document.location='';">
+Play again
+</div>
+<br>
+
+<table id='tablescore'>
+<tr><td>
+<div id="scorebar">
+</div>
+</td></tr></table>
+
+</div>
+
+
+</div>
+
+
+<div id="debutaff" onclick="debutaff();" ontouchstart="debutaff();" onmousedown="debutaff();">
+
+
+<div id="menu">
+<br><br><br><br><br><br>
+Make a maximum of 4 blocks red lines !<br><br>
+(touch to start)
+
+<table id='tablescore'>
+<tr><td>
+<div id="scorebar">
+</div>
+</td></tr></table>
+
+</div>
+
+
+</div>
+
+
+
+</body>
+</html>
+<script>
+
+
+if(typeof(Storage)!=="undefined")
+  {
+  	
+  
+  document.getElementById("highscore").innerHTML=(""+localStorage.getItem("highscore")).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  
+  
+  }
+else
+  {
+  alert("Sorry, your device isn't supporting data storage, your highscore will be forgotten.");
+  }
+
+document.getElementById("block").style.height=$(window).height();
+
+square = $(window).width()/8-3;
+
+$(".oversquare").height(square+"px");
+$(".oversquare").width(square+"px");
+
+$("#perdu").width($(window).width()+"px");
+$("#perdu").height($(window).height()+"px");
+document.getElementById("perdu").style.top=(($(window).height())+"px");
+
+$("#debutaff").width($(window).width()+"px");
+$("#debutaff").height($(window).height()+"px");
+document.getElementById("debutaff").style.top=("0px");
+
+
+if(localStorage.getItem("never")=="0"){
+	localStorage.never="1";
+	document.location = "howto.html";	
+}
+
+	try{
+var addsnd = new Audio();
+addsnd.src="add.wav";
+var linesnd =  new Audio();
+linesnd.src="line.wav";
+var levelsnd =  new Audio();
+levelsnd.src="level.wav";
+var ordisnd =  new Audio();
+ordisnd.src="ordi.wav";
+
+  }catch(err){ var z = 0; }
+
+
+var flag = 0;
+
+
+</script>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html manifest="Blocker.manifest">
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="apple-touch-icon-57×57-precomposed.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Blocker</title>
+<script src="jquery/jquery-1.4.2.js"></script>
+<script src="jquery/jquery.effects.core.js"></script>
+<script>
+window.onscroll = function () { window.scrollTo(0, 0); };
+
+function stopScrolling( touchEvent ) { touchEvent.preventDefault(); }
+document.addEventListener( 'touchstart' , stopScrolling , false );
+document.addEventListener( 'touchmove' , stopScrolling , false );
+
+var i = 0;
+
+var flag = 0;
+
+function tuto(){
+	
+	if(flag==0){
+		flag = 1;
+		setTimeout(function(){flag=0;},100);
+	
+	i=i+$("#howto").height()*(640/961);
+	
+	if(i>$("#howto").height()*(640/961)*7+10){
+		document.location = "game.html";
+	}else{
+	document.getElementById("howto").style.backgroundPosition = "-"+i+"px -40px";
+		
+	}
+	
+	}
+
+}
+
+</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="body" style='text-align:left;'>
+
+<div id="header">
+
+<table style="color:#888;font-size:18px;width:100%;padding:0px 5px 0px 5px">
+<tr><td width="60px">
+<div id="retour" onclick="document.location='acc.html';" onmousedown="document.location='acc.html';" ontouchstart="document.location='acc.html';">Back</div>
+</td><td align="right"></td>
+</tr></table>
+
+</div>
+
+<center>
+
+<div id="howto" style="font-size: 20px;background-image: url('tuto.png');background-size: auto 400px;background-position: 0px -40px;height:400px;width: 280px;" onclick="tuto();" onmousedown="tuto();" ontouchstart="tuto();">
+
+</center>
+
+</div>
+
+</body>
+</html>
+<script>
+
+$("#howto").width($("#howto").height()*(640/961)+"px");
+
+</script>

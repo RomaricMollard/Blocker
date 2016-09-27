@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html manifest="Blocker.manifest">
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="apple-touch-icon-57x57-precomposed.png">
+<link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76-precomposed.png">
+<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120-precomposed.png">
+<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152-precomposed.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Blocker</title>
+<script src="jquery/jquery-1.4.2.js"></script>
+<script src="jquery/jquery.effects.core.js"></script>
+<script>
+
+function stopScrolling( touchEvent ) { touchEvent.preventDefault(); }
+document.addEventListener( 'touchstart' , stopScrolling , false );
+document.addEventListener( 'touchmove' , stopScrolling , false );
+
+function quit(url){
+	
+	$( '.button' ).animate({ marginLeft: "-" + ($(window).width()+10)+'px', }, 200*localStorage.getItem("anim"));
+	$( '#header' ).animate({ opacity: '0.0', }, 200*localStorage.getItem("anim"));
+	$( '#title' ).animate({ opacity: '0.0', }, 200*localStorage.getItem("anim"));
+	
+	sessionStorage.sortie = "1";
+	
+	setTimeout(function(){ document.location = url;}, 200);
+	
+}
+
+</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="body" style='text-align:left;display:none;'>
+<div id="title"><br>
+<b>Blocker</b></div>
+<div id="header">
+<table style="color:#888;font-size:18px;width:100%;padding:0px 5px 0px 5px">
+<tr>
+<td align="center">
+Highscore : <p style="display:inline" id="highscore">0</p>
+</td>
+</tr></table>
+
+</div>
+<div id="menu" style="margin-left:-300px">
+<br><br>
+<div id="button" class="button" onmousedown="quit('menu.html');" ontouchstart="quit('menu.html');">
+Play
+</div>
+<br>
+<div id="button" class="button" onmousedown="quit('high.html');" ontouchstart="quit('high.html');">
+Highscores
+</div>
+<br>
+<div id="button" class="button" onmousedown="quit('opt.html');" ontouchstart="quit('opt.html');">
+Options
+</div>
+
+<table id='tablescore'>
+<tr><td>
+<div id="scorebar">
+</div>
+</td></tr></table>
+
+</div>
+<div id="block">
+
+</div>
+
+<div id="intro">
+
+
+<div id="menu">
+<br><br><br><br><br><br>
+
+<img src="logo.png" height="auto" width="50" ><br>
+
+<table id='tablescore'>
+<tr><td>
+<div id="scorebar">
+</div>
+</td></tr></table>
+
+</div>
+
+
+</div>
+
+
+</body>
+</html>
+<script>
+
+
+if(typeof(Storage)!=="undefined")
+  {
+  	
+  if(!localStorage.getItem("diff")){
+  	localStorage.diff = "0";
+  }
+  	
+  if(!localStorage.getItem("highscore")){
+  	localStorage.highscore = "0";
+  }
+  
+  if(!localStorage.getItem("highscore_easy")){
+    localStorage.highscore_easy = "0";
+  }
+  
+  if(!localStorage.getItem("highscore_diff")){
+    localStorage.highscore_diff = "0";
+  }
+  
+  if(!localStorage.getItem("highscore_insa")){
+    localStorage.highscore_insa = "0";
+  }
+  	
+  if(!localStorage.getItem("sound")){
+    localStorage.sound = "on";
+  }
+  
+  if(!localStorage.getItem("name")){
+    localStorage.name = "Anonymous";
+  }
+  
+  if(!localStorage.getItem("never")){
+  	localStorage.never='0';
+  }
+  
+  
+  if(!localStorage.getItem("id")){
+
+	var date = new Date();
+	var components = [
+	    date.getYear(),
+	    date.getMonth(),
+	    date.getDate(),
+	    date.getHours(),
+	    date.getMinutes(),
+	    date.getSeconds(),
+	    date.getMilliseconds()
+	];
+
+	localStorage.id = components.join("");
+
+  }
+  
+  document.getElementById("highscore").innerHTML=(""+localStorage.getItem("highscore")).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  
+  
+  }
+else
+  {
+  alert("Sorry, your device isn't supporting data storage, your highscore will be forgotten.");
+  }
+  
+if(!sessionStorage.getItem("prem")){
+  
+sessionStorage.prem = "1";
+
+$("#intro").width($(window).width()+"px");
+$("#intro").height($(window).height()+"px");
+document.getElementById("intro").style.top=("0px");
+
+$( 'body' ).fadeOut(0);
+$( 'body' ).fadeIn(1000*localStorage.getItem("anim"));
+
+
+$( '#menu' ).animate({ marginLeft: '0px', }, 200*localStorage.getItem("anim"));
+
+setTimeout(function(){ $( '#intro' ).fadeOut( 200*localStorage.getItem("anim") ); }, 2000);
+
+}else{
+	
+	
+	$( '#menu' ).animate({ marginLeft: '0px', }, 200*localStorage.getItem("anim"));
+$( 'body' ).fadeOut(0);
+$( 'body' ).fadeIn(300*localStorage.getItem("anim"));
+
+	
+}
+
+</script>

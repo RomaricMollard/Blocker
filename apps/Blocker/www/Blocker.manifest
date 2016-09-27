@@ -1,0 +1,25 @@
+CACHE MANIFEST
+
+# Version: 1.1
+
+CACHE:
+index.html
+game.html
+opt.html
+high.html
+menu.html
+multi.html
+style.css
+jquery/jquery-1.4.2.js
+jquery/jquery.effects.core.js
+apple-touch-icon-57x57-precomposed.png
+apple-touch-icon-76x76-precomposed.png
+apple-touch-icon-120x120-precomposed.png
+apple-touch-icon-152x152-precomposed.png
+add.wav
+ordi.wav
+line.wav
+level.wav
+acc.html
+tuto.png
+howto.html

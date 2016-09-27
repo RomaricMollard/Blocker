@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html manifest="Blocker.manifest">
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="apple-touch-icon-57x57-precomposed.png">
+<link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76-precomposed.png">
+<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120-precomposed.png">
+<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152-precomposed.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Blocker</title>
+<script src="jquery/jquery-1.4.2.js"></script>
+<script src="jquery/jquery.effects.core.js"></script>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body align="center">
+
+<iframe src="acc.html" id="viewer" frameborder="0">
+Your device can't display this application.
+</iframe>
+
+</body>
+</html>
+<script>
+
+width = 0 ;
+height = 0 ;
+
+if($(window).width()>$(window).height()){
+	height = $(window).height();
+	width = parseInt($(window).height()/(3/2));
+}else{
+	height = $(window).width()*(3/2);
+	width = $(window).width();
+}
+
+if(height>540){
+	height = 540;
+	width = 540/(3/2);
+}
+
+$("#viewer").width(width+"px");
+$("#viewer").height(height+"px");
+
+localStorage.anim = 1;
+
+</script>

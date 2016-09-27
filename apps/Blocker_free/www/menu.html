@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html manifest="Blocker.manifest">
+<head>
+<link rel="apple-touch-startup-image" href="intro.png">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="apple-touch-icon-57×57-precomposed.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Blocker</title>
+<script src="jquery/jquery-1.4.2.js"></script>
+<script src="jquery/jquery.effects.core.js"></script>
+<script>
+
+
+window.onscroll = function () { window.scrollTo(0, 0); };
+
+function stopScrolling( touchEvent ) { touchEvent.preventDefault(); }
+document.addEventListener( 'touchstart' , stopScrolling , false );
+document.addEventListener( 'touchmove' , stopScrolling , false );
+
+function quit(url){
+	
+	$( '.button' ).animate({ marginLeft:  ($(window).width()+10)+'px', }, 200*localStorage.getItem("anim"));
+	$( '#header' ).animate({ opacity: '0.0', }, 200*localStorage.getItem("anim"));
+	$( '#title' ).animate({ opacity: '0.0', }, 200*localStorage.getItem("anim"));
+	
+	sessionStorage.sortie = "1";
+	
+	setTimeout(function(){ document.location = url;}, 200*localStorage.getItem("anim"));
+	
+}
+
+</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="body" style='text-align:left;'>
+<div id="header" style="opacity: 0.0;">
+
+<table class="header" style="color:#888;font-size:18px;width:100%;padding:0px 5px 0px 5px">
+<tr><td width="60px">
+<div id="retour" onclick="quit('acc.html');" onmousedown="quit('acc.html');" ontouchstart="quit('acc.html');">Back</div>
+</td>
+<td align="right">
+Highscore : <p style="display:inline" id="highscore">0</p>
+</td>
+</tr></table>
+
+</div>
+<div id="menu">
+<br><br><br><br><br>
+<div id="button" class="button" onclick="quit('game.html');" onmousedown="quit('game.html');" ontouchstart="quit('game.html');">
+Solo
+</div>
+<br>
+<div id="button" class="button" style="background: #eee; color: #aaa" >
+Multi <p id="diff" style="display:inline;font-size: 15px">
+(buy the app)
+</p>
+</div>
+
+<table id='tablescore'>
+<tr><td>
+<div id="scorebar">
+</div>
+</td></tr></table>
+
+</div>
+<div id="block">
+
+</div>
+
+</body>
+</html>
+<script>
+
+
+if(typeof(Storage)!=="undefined")
+  {
+  	
+  if(!localStorage.getItem("diff")){
+  	localStorage.diff = "0";
+  }
+  	
+  if(!localStorage.getItem("highscore")){
+  	localStorage.highscore = "0";
+  }
+  	
+  document.getElementById("highscore").innerHTML=(""+localStorage.getItem("highscore")).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  
+  
+  }
+else
+  {
+  alert("Sorry, your device isn't supporting data storage, your highscore will be forgotten.");
+  }
+  
+    if(sessionStorage.getItem("sortie")=="1"){
+  sessionStorage.sortie = "0";
+   $( '.button' ).animate({ opacity: '0.0' }, 0);
+ $( '.button' ).animate({ opacity: '1.0' }, 200*localStorage.getItem("anim"));
+ $( '#header' ).animate({ opacity: '1.0', }, 200*localStorage.getItem("anim"));
+
+  }else{
+  	 $( '#header' ).animate({ opacity: '1.0', }, 0);
+
+  }
+
+
+</script>
